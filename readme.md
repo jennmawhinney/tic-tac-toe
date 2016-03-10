@@ -10,5 +10,8 @@ A draw will be declared if no one wins.
 Play the game [here.](http://jennmawhinney.github.io/tic-tac-toe/)
 
 Features that I'd like to add in the future:
-*customisable tokens
-*music for the winner
+<ul>
+<li>customisable tokens.</li>
+<li>music for the winner.</li>
+<li>generate a random play so that the  players could be either X or O.</li>
+</ul>
