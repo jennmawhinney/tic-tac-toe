@@ -4,7 +4,6 @@ var player1Win = [];
 var player2Win = [];
 var draw = [];
 
-//winning combinations
 $(document).ready(function() {
 
   //make cat invisible and remove from document flow
@@ -13,7 +12,6 @@ $(document).ready(function() {
   });
 
   //check for winner against board array ^^
-
   var reset = function() {
     $('.button').on('click', function() {
       $('.cat').slideUp(100);
@@ -24,18 +22,16 @@ $(document).ready(function() {
         'display': 'block'
       });
       $('.box').text('?');
-      // if ('.box' === 'X' || 'O') {
-      //   $(this).text('?');
       $('.box').css({
         'background-color': '#F3EBDD'
       });
       $('.box').css({
         'color': 'rgb(236, 173, 190)'
       });
-      // }
     });
   };
 
+  //final Reset (after 3 wins by X or O)
   var finalReset = function() {
     reset();
     $('h4').text('');
@@ -57,55 +53,50 @@ $(document).ready(function() {
     });
   };
 
-  //check for a draw
+  //check for a draw - adds clicked elements to an array (draw) in drawTest.
+  //Converts the contents to a string, stores data in a var (answer) and compares
+  //to the draw array. If true, its a draw.
+  var drawTest = function() {
+    if ($('.box#one').hasClass('clicked')) {
+      draw[0] = ('1');
+    }
+    if ($('.box#two').hasClass('clicked')) {
+      draw[1] = ('2');
+      console.log('draw');
+    }
+    if ($('.box#three').hasClass('clicked')) {
+      draw[2] = ('3');
+    }
+    if ($('.box#four').hasClass('clicked')) {
+      draw[3] = ('4');
+    }
+    if ($('.box#five').hasClass('clicked')) {
+      draw[4] = ('5');
+    }
+    if ($('.box#six').hasClass('clicked')) {
+      draw[5] = ('6');
+    }
+    if ($('.box#seven').hasClass('clicked')) {
+      draw[6] = ('7');
+    }
+    if ($('.box#eight').hasClass('clicked')) {
+      draw[7] = ('8');
+    }
+    if ($('.box#nine').hasClass('clicked')) {
+      draw[8] = ('9');
+    }
+  };
 
-    // var drawTest = function() {
-    //  var alphaBoard = board.toString();
-    //  var alphaBoard2 = alphaBoard.split('').sort().join('');
-    //  if(alphaBoard === ("OOOOXXXXX")){
-    //  console.log('draw');}
-    // };
-
-    var drawTest = function(){
-      if ($('.box#one').hasClass('clicked')){
-        draw[0] = ('1');
+  var checkDraw = function() {
+    drawTest();
+    console.log(draw);
+    var answer = draw.toString();
+    if (answer === ('1,2,3,4,5,6,7,8,9')) {
+      swal("It's a draw!", "Hit 'Let's Play' to play again");
     }
-      if ($('.box#two').hasClass('clicked')){
-        draw[1] = ('2');
-      console.log('draw');}
-      if ($('.box#three').hasClass('clicked')){
-        draw[2] = ('3');
-    }
-      if ($('.box#four').hasClass('clicked')){
-        draw[3] = ('4');
-    }
-      if ($('.box#five').hasClass('clicked')){
-        draw[4] = ('5');
-    }
-      if ($('.box#six').hasClass('clicked')){
-        draw[5] = ('6');
-    }
-      if ($('.box#seven').hasClass('clicked')){
-        draw[6] = ('7');
-    }
-      if ($('.box#eight').hasClass('clicked')){
-        draw[7] = ('8');
-    }
-      if ($('.box#nine').hasClass('clicked')){
-        draw[8] = ('9');
-    }
-    };
-
-    var checkDraw = function(){
-      drawTest();
-      console.log(draw);
-      var answer = draw.toString();
-      if (answer === ('1,2,3,4,5,6,7,8,9')){
-          swal("It's a draw!", "Hit 'Let's Play' to play again");
-      }
-      reset();
-    };
-  //announce which player which player and change to next player
+    reset();
+  };
+  //announce which player which players turn and changes to next player
   var newPlayer = [];
   var nextPlayer = ['X', 'O'];
 
@@ -127,6 +118,7 @@ $(document).ready(function() {
     announceTurn();
   };
 
+  //Scoreboard function
   trackWin = function() {
     if ((player1Win).length === 3) {
       $('.turnTaker').text('Player 1 is the ultimate winner!');
@@ -140,20 +132,20 @@ $(document).ready(function() {
       swal("Player 2 is the ultimate winner.", "Enjoy your prize!");
       $('.button').addClass('.gameOver');
       $('.button').text('Congratulations!');
-}
+    }
     if ($('.button').hasClass('.gameOver')) {
       finalReset();
     }
-};
+  };
 
-  //when Let's Play button clicked announce first player
+  //when Let's Play button clicked announce first player -starts it off
   $('.button').on('click', function() {
     board.push([]);
     newPlayer[0] = 'O';
     $('.turnTaker').text('Hit it!');
   });
 
-  //possible winners
+  //winning combinations
 
   var winnerX = function() {
     if ((board[0] + board[1] + board[2]) === 'XXX') {
@@ -228,7 +220,7 @@ $(document).ready(function() {
       trackWin();
       reset();
     }
-};
+  };
 
   var winnerO = function() {
     if ((board[0] + board[1] + board[2]) === 'OOO') {
@@ -305,26 +297,30 @@ $(document).ready(function() {
     }
   };
 
+  //the game: also a function to alert if square is taken.
+  //uses most of the above functions to run the game.
+  //each time a box is clicked it adds the class clicked. This is important
+  //for seeing which box is already taken and also if there is a draw.
   $(".box").on("click", function() {
-  if ($(this).hasClass('clicked')) {
-  swal("This square is taken!", "Please try another");
-  return false;
-  }
-  whoseTurn();
-  $(this).css({
-  'background-color': '#9e9e9e',
-  'color': '#ECADBE'
-  });
-  $('h1').css({
-  'font-size': '2.5em'
-  });
-  $(this).text(newPlayer[0]);
-  var position = $(this).data('position');
-  board[position] = (newPlayer[0]);
-  $(this).addClass('clicked');
-  console.log(board);
-  winnerX();
-  winnerO();
-  checkDraw();
+    if ($(this).hasClass('clicked')) {
+      swal("This square is taken!", "Please try another");
+      return false;
+    }
+    whoseTurn();
+    $(this).css({
+      'background-color': '#9e9e9e',
+      'color': '#ECADBE'
+    });
+    $('h1').css({
+      'font-size': '2.5em'
+    });
+    $(this).text(newPlayer[0]);
+    var position = $(this).data('position');
+    board[position] = (newPlayer[0]);
+    $(this).addClass('clicked');
+    console.log(board);
+    winnerX();
+    winnerO();
+    checkDraw();
   });
 });
