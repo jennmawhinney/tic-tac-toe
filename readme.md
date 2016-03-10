@@ -14,4 +14,5 @@ Features that I'd like to add in the future:
 <li>customisable tokens.</li>
 <li>music for the winner.</li>
 <li>generate a random play so that the  players could be either X or O.</li>
+<li>add different prizes</li>
 </ul>

@@ -93,6 +93,8 @@ $(document).ready(function() {
     var answer = draw.toString();
     if (answer === ('1,2,3,4,5,6,7,8,9')) {
       swal("It's a draw!", "Hit 'Let's Play' to play again");
+      reset();
+      return true;
     }
     reset();
   };
@@ -319,8 +321,10 @@ $(document).ready(function() {
     board[position] = (newPlayer[0]);
     $(this).addClass('clicked');
     console.log(board);
-    winnerX();
-    winnerO();
-    checkDraw();
+    var draw = checkDraw();
+    if ( !draw ) {
+      winnerX();
+      winnerO();
+    }
   });
 });
